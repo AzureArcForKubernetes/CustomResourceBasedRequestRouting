@@ -1,0 +1,6 @@
+apiVersion: arc.azure.com/v1beta1
+kind: RequestRoutingRules
+metadata:
+  name: requestroutingrules-sample
+spec:
+  # TODO(user): Add fields here

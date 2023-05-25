@@ -1,0 +1,16 @@
+domain: azure.com
+layout:
+- go.kubebuilder.io/v3
+projectName: customresourcebasedrequestrouting
+repo: github.com/AzureArcForKubernetes/CustomResourceBasedRequestRouting
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: azure.com
+  group: arc
+  kind: RequestRoutingRules
+  path: github.com/AzureArcForKubernetes/CustomResourceBasedRequestRouting/api/v1beta1
+  version: v1beta1
+version: "3"

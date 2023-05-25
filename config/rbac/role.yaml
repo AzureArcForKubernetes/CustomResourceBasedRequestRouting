@@ -1,0 +1,33 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - arc.azure.com
+  resources:
+  - requestroutingrules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - arc.azure.com
+  resources:
+  - requestroutingrules/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - arc.azure.com
+  resources:
+  - requestroutingrules/status
+  verbs:
+  - get
+  - patch
+  - update
