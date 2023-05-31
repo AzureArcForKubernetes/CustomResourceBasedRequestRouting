@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service
+  namespace: system
+  labels:
+    control-plane: controller-manager
+spec:
+  type: NodePort #Exposes the service as a node ports
+  ports:
+  - port: 8082
+    name: hello
+    targetPort: 8082
+  selector:
+    control-plane: controller-manager
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: system
+  annotations:
+    #kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1$2$3
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - test-request-router.rp.kubernetesconfiguration-test.azure.com
+    - test-request-router.dp.kubernetesconfiguration-test.azure.com
+    secretName: ingress-tls-csi
+  rules:
+  - host: test-request-router.rp.kubernetesconfiguration-test.azure.com
+    http:
+      paths:
+      - path: /?(.+)(/Microsoft.KubernetesConfiguration/)(.*)
+        pathType: Exact
+        backend:
+          service:
+            name: requestrouting-service
+            port:
+              number: 8082
+      - path: /?(subsc)(riptions/)([^/]*)/?$
+        pathType: Exact
+        backend:
+          service:
+            name: requestrouting-service
+            port:
+              number: 8082
+  - host: test-request-router.dp.kubernetesconfiguration-test.azure.com
+    http:
+      paths:
+      - path: /(.*)
+        pathType: Prefix      
+        backend:
+          service:
+            name: requestrouting-service
+            port:
+              number: 8082

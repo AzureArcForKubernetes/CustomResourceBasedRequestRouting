@@ -1,0 +1,42 @@
+apiVersion: secrets-store.csi.x-k8s.io/v1
+kind: SecretProviderClass
+metadata:
+  name: azure-tls
+  namespace: system
+spec:
+  provider: azure
+  secretObjects:
+  - secretName: ingress-tls-csi
+    type: kubernetes.io/tls
+    data: 
+    - objectName: KubernetesConfigSSLCert
+      key: tls.key
+    - objectName: KubernetesConfigSSLCert
+      key: tls.crt
+  parameters:
+    usePodIdentity: "false"
+    useVMManagedIdentity: "false"
+    clientID: "02a709e3-c69f-413c-bf1c-95eaeb29a4e3"
+    keyvaultName: ccglobalkv
+    objects: |
+      array:
+        - |
+          objectName: KubernetesConfigSSLCert
+          objectType: secret
+    tenantId: "72f988bf-86f1-41af-91ab-2d7cd011db47"
+---
+apiVersion: v1
+automountServiceAccountToken: true
+kind: ServiceAccount
+metadata:
+  annotations:
+    azure.workload.identity/use: "true"
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/instance: sa
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/part-of: ingress-nginx
+    app.kubernetes.io/version: 1.7.1
+    azure.workload.identity/client-id: 02a709e3-c69f-413c-bf1c-95eaeb29a4e3
+  name: sa
+  namespace: system

@@ -17,7 +17,6 @@ limitations under the License.
 package main
 
 import (
-	"flag"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -32,7 +31,7 @@ import (
 
 	arcv1beta1 "github.com/AzureArcForKubernetes/CustomResourceBasedRequestRouting/api/v1beta1"
 	"github.com/AzureArcForKubernetes/CustomResourceBasedRequestRouting/controllers"
-	requesthandler "github.com/AzureArcForKubernetes/CustomResourceBasedRequestRouting/requestHandler"
+	requesthandler "github.com/AzureArcForKubernetes/CustomResourceBasedRequestRouting/requesthandler"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -51,9 +50,6 @@ func main() {
 	opts := zap.Options{
 		Development: true,
 	}
-	opts.BindFlags(flag.CommandLine)
-	flag.Parse()
-
 	ctrl.SetLogger(zap.New(zap.UseFlagOptions(&opts)))
 
 	go requesthandler.StartProxyServer()

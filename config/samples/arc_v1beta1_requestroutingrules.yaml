@@ -1,6 +1,23 @@
 apiVersion: arc.azure.com/v1beta1
 kind: RequestRoutingRules
 metadata:
-  name: requestroutingrules-sample
+  name: sample
+  namespace: system
 spec:
-  # TODO(user): Add fields here
+  #dnsName: partner.rp.kubernetesconfiguration-test.azure.com
+  dnsName: 20.39.12.229
+  isPublicEndpoint: true
+  isPortForwardingNeeded: false
+  resourceNameSubstring: test
+---
+apiVersion: arc.azure.com/v1beta1
+kind: RequestRoutingRules
+metadata:
+  name: sample
+  namespace: system
+spec:
+  #dnsName: partner.rp.kubernetesconfiguration-test.azure.com
+  dnsName: merge-validation-cluster1
+  isPublicEndpoint: true
+  isPortForwardingNeeded: false
+  resourceNameSubstring: test-build--113

@@ -74,6 +74,7 @@ func ResolveProxyEndpoint(incomingUrl string) string {
 	for _, rule := range RoutingRules {
 		if strings.Contains(incomingUrl, rule.Spec.ResourceNameSubstring) {
 			if rule.Spec.IsPublicEndpoint {
+				log.Log.Info("Found public endpoint %s for incoming url %s", rule.Spec.DNSName, incomingUrl)
 				return rule.Spec.DNSName
 			}
 		}
@@ -83,6 +84,7 @@ func ResolveProxyEndpoint(incomingUrl string) string {
 
 // SetupWithManager sets up the controller with the Manager.
 func (r *RequestRoutingRulesReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	RoutingRules = make(map[string]*arcv1beta1.RequestRoutingRules)
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&arcv1beta1.RequestRoutingRules{}).
 		Complete(r)
